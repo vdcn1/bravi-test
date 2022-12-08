@@ -1,19 +1,26 @@
 import { Schema, model, connect } from 'mongoose';
-
-import { Contacts } from '../common/constants'
-
 interface IUser {
     name: string;
     gender: string;
     avatar?: string;
-    contacts: Contacts;
+    email: string;
+    contacts: {
+        email: string;
+        phone?: string;
+        whatsapp?: string;
+    }
 }
 
 const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
     gender: String,
     avatar: String,
-    contacts: Contacts,
+    email: { type: String, required: true, unique: true },
+    contacts: {
+        email: String,
+        phone: String,
+        whatsapp: String
+    },
 });
 
 export const User = model<IUser>('User', userSchema);

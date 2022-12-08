@@ -1,4 +1,5 @@
 import express from "express";
+import { ResponseDTO } from "../common/constants";
 import { UserService } from "../services/userService";
 
 export class UserRoute {
@@ -18,45 +19,57 @@ export class UserRoute {
         this.router.delete("/user/:email/phone", this.removePhone);
     }
 
-    public getUser(res: express.Response, req: express.Request) {
+    public getUser(req: express.Request,res: express.Response) {
         const userService = new UserService();
         userService.getUser(req.body).then((user) => {
             res.json(user);
+        }).catch((error) => {
+            res.json(new ResponseDTO("User fetch failed", error, null));
         });
     }
 
-    public createUser(res: express.Response, req: express.Request) {
+    public createUser(req: express.Request,res: express.Response) {
         const userService = new UserService();
-        userService.createUser(req.body).then((user) => {
-            res.json(user);
+        userService.createUser(req.body).then(() => {
+            res.json(new ResponseDTO("User created", null, null));
+        }).catch((error) => {
+            res.json(new ResponseDTO("User creation failed", error, null));
         });
     }
 
-    public removeUser(res: express.Response, req: express.Request) {
+    public removeUser(req: express.Request,res: express.Response) {
         const userService = new UserService();
-        userService.removeUser(req.body).then((user) => {
-            res.json(user);
-        });
+        userService.removeUser(req.body).then(() => {
+            res.json(new ResponseDTO("User removed", null, null));
+        }).catch((error) => {
+            res.json(new ResponseDTO("User removal failed", error, null));
+        });;
     }
 
-    public updateUser(res: express.Response, req: express.Request) {
+    public updateUser(req: express.Request,res: express.Response) {
         const userService = new UserService();
-        userService.updateUser(req.body).then((user) => {
-            res.json(user);
-        });
+        userService.updateUser(req.body).then(() => {
+            res.json(new ResponseDTO("User updated", null, null));
+        }).catch((error) => {
+            res.json(new ResponseDTO("User update failed", error, null));
+        });;
     }
 
-    public removeWhatsapp(res: express.Response, req: express.Request) {
+    public removeWhatsapp(req: express.Request,res: express.Response) {
         const userService = new UserService();
         userService.removeWhatsapp(req.body).then((user) => {
-            res.json(user);
-        });
+            res.json(new ResponseDTO("Removed whatsapp", null, null));
+        }).catch((error) => {
+            res.json(new ResponseDTO("Whatsapp removal failed", error, null));
+        });;
     }
 
-    public removePhone(res: express.Response, req: express.Request) {
+    public removePhone(req: express.Request,res: express.Response) {
         const userService = new UserService();
         userService.removePhone(req.body).then((user) => {
-            res.json(user);
+            res.json(new ResponseDTO("Phone removed", null, null));
+        }).catch((error) => {
+            res.json(new ResponseDTO("Phone removal failed", error, null));
         });
     }
 }

@@ -58,6 +58,5 @@ export class UserService {
         } catch(error) {
             console.log("Could not remove phone number");
         }
-    }
-    
+    }    
 }
