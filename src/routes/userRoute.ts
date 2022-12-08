@@ -13,18 +13,18 @@ export class UserRoute {
     private initializeRoutes() {
         this.router.get("/user/:email", this.getUser);
         this.router.post("/user", this.createUser);
-        this.router.delete("/user/:email", this.removeUser);
-        this.router.put("/user/:email", this.updateUser);
+        this.router.delete("/user", this.removeUser);
+        this.router.put("/user", this.updateUser);
         this.router.delete("/user/:email/whatsapp", this.removeWhatsapp);
         this.router.delete("/user/:email/phone", this.removePhone);
     }
 
-    public getUser(req: express.Request,res: express.Response) {
+    public getUser(req: express.Request, res: express.Response) {
         const userService = new UserService();
-        userService.getUser(req.body).then((user) => {
-            res.json(user);
+        userService.getUser(req.params.email).then((user) => {
+            res.json(new ResponseDTO("User fetched", null, user));
         }).catch((error) => {
-            res.json(new ResponseDTO("User fetch failed", error, null));
+            res.json(new ResponseDTO("User fetch failed", error.message, null));
         });
     }
 
@@ -33,7 +33,7 @@ export class UserRoute {
         userService.createUser(req.body).then(() => {
             res.json(new ResponseDTO("User created", null, null));
         }).catch((error) => {
-            res.json(new ResponseDTO("User creation failed", error, null));
+            res.json(new ResponseDTO("User creation failed", error.message, null));
         });
     }
 
@@ -42,7 +42,7 @@ export class UserRoute {
         userService.removeUser(req.body).then(() => {
             res.json(new ResponseDTO("User removed", null, null));
         }).catch((error) => {
-            res.json(new ResponseDTO("User removal failed", error, null));
+            res.json(new ResponseDTO("User removal failed", error.message, null));
         });;
     }
 
@@ -51,7 +51,7 @@ export class UserRoute {
         userService.updateUser(req.body).then(() => {
             res.json(new ResponseDTO("User updated", null, null));
         }).catch((error) => {
-            res.json(new ResponseDTO("User update failed", error, null));
+            res.json(new ResponseDTO("User update failed", error.message, null));
         });;
     }
 
@@ -60,8 +60,8 @@ export class UserRoute {
         userService.removeWhatsapp(req.body).then((user) => {
             res.json(new ResponseDTO("Removed whatsapp", null, null));
         }).catch((error) => {
-            res.json(new ResponseDTO("Whatsapp removal failed", error, null));
-        });;
+            res.json(new ResponseDTO("Whatsapp removal failed", error.message, null));
+        });
     }
 
     public removePhone(req: express.Request,res: express.Response) {
@@ -69,7 +69,7 @@ export class UserRoute {
         userService.removePhone(req.body).then((user) => {
             res.json(new ResponseDTO("Phone removed", null, null));
         }).catch((error) => {
-            res.json(new ResponseDTO("Phone removal failed", error, null));
+            res.json(new ResponseDTO("Phone removal failed", error.message, null));
         });
     }
 }

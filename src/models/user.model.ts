@@ -4,11 +4,11 @@ interface IUser {
     gender: string;
     avatar?: string;
     email: string;
-    contacts: {
+    contacts: [{
         email: string;
         phone?: string;
         whatsapp?: string;
-    }
+    }]
 }
 
 const userSchema = new Schema<IUser>({
@@ -16,11 +16,11 @@ const userSchema = new Schema<IUser>({
     gender: String,
     avatar: String,
     email: { type: String, required: true, unique: true },
-    contacts: {
+    contacts: [{
         email: String,
         phone: String,
         whatsapp: String
-    },
+    }],
 });
 
 export const User = model<IUser>('User', userSchema);

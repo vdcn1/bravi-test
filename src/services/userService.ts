@@ -7,19 +7,21 @@ export class UserService {
             const newUser = new User(user);
             await newUser.save();
             console.log("User created");
-        } catch (error) {
-            console.log("User creation failed");
+        } catch (error: any) {
+            console.log("User creation failed " + error);
+            throw new Error("User creation failed " + error.errmsg);
         }
     }
 
     public getUser = async (email: string) => {
         try {
-            const foundUser = await User.findOne({ email }).exec();
-            if(!isNullOrUndefined){
+            const foundUser = await User.findOne({'email': email}).exec();
+            if(!isNullOrUndefined(foundUser)){
                 return foundUser;
             } else return new User("");
         } catch(error) {
             console.log("User not found");
+            throw new Error("User not found " + error);
         }
     }
 
@@ -31,7 +33,7 @@ export class UserService {
                 return foundUser;
             } else return new User("");
         } catch(error) {
-            console.log("User not found");
+            throw new Error("User not found " + error);
         }
     }
 
@@ -40,7 +42,7 @@ export class UserService {
             await User.findOneAndRemove({email: email}).exec();
         } 
         catch(error) {
-            console.log("User not found");
+            throw new Error("User not removed " + error);
         }
     }
 
@@ -49,6 +51,7 @@ export class UserService {
             await User.findOne({ email }).updateOne({ $unset: { contacts: {whatsapp: "" } } }).exec();
         } catch(error) {
             console.log("Could not remove Whatsapp number");
+            throw new Error("Could not remove Whatsapp number " + error);
         }
     }
 
@@ -56,7 +59,7 @@ export class UserService {
         try {
             await User.findOne({ email }).updateOne({ $unset: { contacts: {telephone: "" } } }).exec();
         } catch(error) {
-            console.log("Could not remove phone number");
+            throw new Error("Could not remove phoneNumber " + error);
         }
     }    
 }
